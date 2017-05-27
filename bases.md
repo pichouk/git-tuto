@@ -40,9 +40,28 @@ git push origin master
 Quelques explications sur la commande :
 - `git push` permet de publier (ou parle de *push*) l'état actuel du *repository* local vers un *repository* distant.
 - `origin` est le nom du *repository* distant vers lequel on veut *push*.
-- `master` est le nom de la *branch* que l'on souhaite *pusher*. Le concept de *branch* sera expliqué plus tard, il faut juste savoir que la *branch* par défaut s'appelle généralement *master*.
+- `master` est le nom de la *branch* que l'on souhaite *pusher*. Le concept de *branch* sera expliqué plus tard, il faut juste savoir que la *branch* par défaut s'appelle généralement `master`.
 
 Ainsi le code est partagé sur le *repository* distant (on peut le voir dans l'interface de Github). Si on souhaite récupérer la dernière version du code (par exemple si quelqu'un a *push* une modification) on fait :
 ```
 git pull origin master
 ```
+
+### Les branches
+Un concept important de Git est celui de *branch*. Une *branch* est, littéralement, une branche ou ramification dans le code. Par exemple, sur le développement d'un site Web, vous voulez coder un nouveau module (par exemple un système de gestion de commentaires). Le travail est long et conséquent, vous ne pouvez pas le faire en une seule fois. Pendant le temps de développement de ce module, on ne veut aussi pouvoir travailler sur autre chose si besoin (par exemple corriger une erreur). Pour cela, on va créer une *branch* spéciale dans laquelle sera réalisé le développement du module. Le projet aura une *branch* principale (généralement `master`) et une branche spéciale (par exemple *ajout-commentaires*) dans laquelle on pourra coder notre module. Lorsque celui-ci sera terminé, on pourra intégrer le code dans la *branch* principale, ce que l'on appelle un *merge*.
+
+#### Création d'une branche
+Imaginons que nous sommes sur un projet avec une *branch* principale nommée `master`. On souhaite développer une fonctionnalité (disons un module de commentaires) sur une *branch* temporaire. On va créer une *branch* que l'on nommera `monmodule` :
+```
+git branch monmodule
+```
+
+La *branch* est créé, on peut vérifier que l'on se trouve bien sur celle ci à l'aide de la commande `git branch` qui liste les *branch* existantes et indique la *branch* courante. On peut ensuite commencer à travailler normalement sur son module et faire des *commits* qui ne seront **que** sur la *branch* `monmodule`. À tout moment, (par exemple pour corriger un bug urgent n'ayant rien à voir avec le module), on peut retourner sur la *branch* `master` avec la commande `git checkout master`.
+
+#### *Merge* d'une branche
+Une fois le travail terminé sur notre module, on veut récupérer tout les *commits* qui ont été réalisés dans notre *branch* `monmodule` vers notre *branch* principale (`master`). On va pour cela réaliser une opération de *merge*, c'est à dire intégrer les *commits* d'une *branch* dans une autre. On se positionne dans `master` puis on *merge* :
+```
+git checkout master
+git merge --no-ff monmodule
+```
+On se trouve dans `master` et on demande un *merge* de `monmodule`, ce qui va fusionner les deux *branch*. (On ne se soucis pas de l'option `--no-ff` ici, elle est simplement utile pour conserver un *repository* propre).
